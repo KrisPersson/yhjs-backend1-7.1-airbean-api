@@ -1,20 +1,30 @@
-const { getAll, postOrder, getActiveOrders } = require('../model/beans.model')
+const { getAllBeans, postOrder, getOrderStatus } = require('../model/beans.model')
 
-function getAllCtrl(request, response) {
-  response.json({ success: true, ...getAll })
+function getAllBeansCtrl(request, response) {
+  response.json({ success: true, ...getAllBeans() })
 }
 
 async function postOrderCtrl(request, response) {
     const order = request.body
-    const newOrder = await postOrder(order)
-    response.json({ success: true, order: newOrder })
+    
+    try {
+      const newOrder = await postOrder(order)
+      response.json({ success: true, order: newOrder })
+    } catch (error) {
+      response.status(401).json({ success: false, message: error.message})
+    }
 }
 
-async function activeOrdersCtrl(request, response) {
+async function getOrderStatusCtrl(request, response) {
   const { userId } = request.params;
-  const activeOrders = await getActiveOrders(userId);
 
-  response.json({ userId, activeOrders })
+  try {
+    const activeOrder = await getOrderStatus(userId);
+    response.json({ success: true, userId, activeOrder})
+  } catch (error) {
+    response.json({ success: false, message: error.message})
+  }
 }
 
-module.exports = { getAllCtrl, postOrderCtrl, activeOrdersCtrl }
+module.exports = { getAllBeansCtrl, postOrderCtrl, getOrderStatusCtrl }
+

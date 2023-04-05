@@ -1,15 +1,23 @@
 const moment = require('moment')
 const beans = require('../assets/menu.json')
-const { orderDb } = require('../db')
+const { orderDb, userDb } = require('../db')
 
-function getAll() {
+function getAllBeans() {
     return beans
 }
 
 async function postOrder(order) {
+    const userId = order.details.userId
+    if (userId) {
+        const userExist = await userDb.findOne({ userId })
+
+        if (!userExist) {
+            throw new Error('User does not exist')
+        }
+    }
 
     const newOrder = {
-        userId: order.details.userId || 'guest',
+        userId: order.details.userId,
         order: order.details.order,
         orderedAt: moment().format(), 
         deliveryAt: moment()
@@ -21,19 +29,23 @@ async function postOrder(order) {
     return newOrder
 }
 
-async function getActiveOrders(userId) {
+async function getOrderStatus(userId) {
     const getEta = (deliveryAt) => moment(deliveryAt).diff(moment(), 'm')
 
     const orders = await orderDb.find({ userId })
 
-    return orders
+    const currentOrder = orders
         .filter((order) => getEta(order.deliveryAt) >= 0)
-        .map((order) => {
-            return {
-                items: order.order,
-                eta: getEta(order.deliveryAt)
-            }
-        })
+        .at(-1)
+    
+    if (currentOrder) {
+        return {
+            items: currentOrder?.order,
+            eta: getEta(currentOrder?.deliveryAt)
+        }
+    } else {
+        throw new Error('No active order')
+    }
 }
 
-module.exports = { getAll, postOrder, getActiveOrders }
+module.exports = { getAllBeans, postOrder, getOrderStatus }

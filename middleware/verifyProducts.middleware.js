@@ -16,9 +16,9 @@ function verifyProducts(request, response, next) {
   const correctPrices = order.every((item) => validatePrice(item))
 
   if (!validProducts) {
-    response.json({ success: true, message: 'Product does not exist' })
+    response.status(400).json({ success: true, message: 'Product does not exist' })
   } else if (!correctPrices) {
-    response.json({ success: true, message: 'Invalid price for product' })
+    response.status(400).json({ success: true, message: 'Invalid price for product' })
   } else {
     next()
   }
