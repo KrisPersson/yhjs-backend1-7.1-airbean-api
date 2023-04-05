@@ -1,11 +1,11 @@
-const menu = require('../assets/menu.json')
+const { menu } = require('../assets/menu.json')
 
 function isProduct(item) {
-  return menu.some((product) => product.name === item.name)
+  return menu.some((product) => product.title === item.name)
 }
 
 function validatePrice(item) {
-  const { price } = menu.find((product) => product.name === item.name)
+  const price = menu.find((product) => product.title === item.name)?.price
   return item.price === price
 }
 
@@ -17,13 +17,11 @@ function verifyProducts(request, response, next) {
 
   if (!validProducts) {
     response.json({ success: true, message: 'Product does not exist' })
-  }
-
-  if (!correctPrices) {
+  } else if (!correctPrices) {
     response.json({ success: true, message: 'Invalid price for product' })
+  } else {
+    next()
   }
-
-  next()
 }
 
 module.exports = { verifyProducts }

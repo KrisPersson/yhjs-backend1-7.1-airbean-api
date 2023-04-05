@@ -20,8 +20,8 @@ async function signup(email, password, username) {
     return randomId
 }
 
-async function getOrder(userId){
-    return await ordersDb.findOne({ userId })
+async function getOrders(userId){
+    return await ordersDb.find({ userId })
 }
 
-module.exports = { signup, getOrder }
+module.exports = { signup, getOrders }

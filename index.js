@@ -14,7 +14,7 @@ const timeInTenMins = moment().add(10, 'm');
 
 const eta = moment().add(5, 'm').subtract(moment()).minutes()
 
-console.log(eta)
+// console.log(eta)
 // console.log(timeInTenMins)
 
 

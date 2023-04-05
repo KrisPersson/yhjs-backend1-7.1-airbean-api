@@ -1,6 +1,6 @@
 const { Router } = require('express')
 const router = Router()
-const { newUser, get } = require('../controllers/user.controller')
+const { newUser, getHistoryCtrl } = require('../controllers/user.controller')
 
 router.post('/signup', newUser)
 
@@ -8,7 +8,7 @@ router.post('/signup', newUser)
 // router.post('/login', )
 
 
- router.get('/history/:userId', get)
+router.get('/history/:userId', getHistoryCtrl)
 
 
 

@@ -1,4 +1,4 @@
-const { signup, getOrder } = require('../model/user.model')
+const { signup, getOrders } = require('../model/user.model')
 
 
 async function newUser(request, response){
@@ -17,14 +17,14 @@ async function newUser(request, response){
 
 
 
-async function get(request, response){
+async function getHistoryCtrl(request, response){
     const { userId } = request.params
     
-    const order = await getOrder(userId)
+    const orders = await getOrders(userId)
     response.json({
         success: true,
-        order
+        orders
     })
 }
 
-module.exports = {newUser}
+module.exports = {newUser, getHistoryCtrl}

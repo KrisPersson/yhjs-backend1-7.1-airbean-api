@@ -9,7 +9,7 @@ function getAll() {
 async function postOrder(order) {
 
     const newOrder = {
-        userId: order.details.userId,
+        userId: order.details.userId || 'guest',
         order: order.details.order,
         orderedAt: moment().format(), 
         deliveryAt: moment()
@@ -21,4 +21,19 @@ async function postOrder(order) {
     return newOrder
 }
 
-module.exports = { getAll, postOrder }
+async function getActiveOrders(userId) {
+    const getEta = (deliveryAt) => moment(deliveryAt).diff(moment(), 'm')
+
+    const orders = await orderDb.find({ userId })
+
+    return orders
+        .filter((order) => getEta(order.deliveryAt) >= 0)
+        .map((order) => {
+            return {
+                items: order.order,
+                eta: getEta(order.deliveryAt)
+            }
+        })
+}
+
+module.exports = { getAll, postOrder, getActiveOrders }

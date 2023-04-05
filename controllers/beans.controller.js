@@ -1,4 +1,4 @@
-const { getAll, postOrder } = require('../model/beans.model')
+const { getAll, postOrder, getActiveOrders } = require('../model/beans.model')
 
 function getAllCtrl(request, response) {
   response.json({ success: true, ...getAll })
@@ -10,4 +10,11 @@ async function postOrderCtrl(request, response) {
     response.json({ success: true, order: newOrder })
 }
 
-module.exports = { getAllCtrl, postOrderCtrl }
+async function activeOrdersCtrl(request, response) {
+  const { userId } = request.params;
+  const activeOrders = await getActiveOrders(userId);
+
+  response.json({ userId, activeOrders })
+}
+
+module.exports = { getAllCtrl, postOrderCtrl, activeOrdersCtrl }
