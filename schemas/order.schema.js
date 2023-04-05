@@ -5,7 +5,7 @@ const schema = joi.object({
     userId: joi.string().allow('').required(),
     order: joi.array().items(
       joi.object({
-        name: joi.string().alphanum().required(),
+        name: joi.string().required(),
         price: joi.number().integer().min(0).required()
       }).required()
     )
