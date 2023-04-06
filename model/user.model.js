@@ -19,9 +19,9 @@ async function signup(email, password, username) {
             email: email,
             userId: randomId,
             password: hashedPassword,
-            username: username        
+            username: username
         }
-    
+
         await userDb.insert(signupObj)
         return randomId
     }
@@ -31,21 +31,18 @@ async function login(username, password) {
     const user = await userDb.findOne({ username })
     const passwordMatch = bcrypt.compare(password, user.password)
 
-    console.log(username, password)
-
     if (passwordMatch) {
-        console.log('Logged in!')
         return user.userId
     } else {
         throw new Error('Login failed. No matches for this username/password combo.')
     }
 }
 
-async function getOrderHistory(userId){
+async function getOrderHistory(userId) {
     const getEta = (deliveryAt) => moment(deliveryAt).diff(moment(), 'm')
 
     const orders = await orderDb.find({ userId })
-    
+
     const history = orders
         .map((order) => {
             return {
