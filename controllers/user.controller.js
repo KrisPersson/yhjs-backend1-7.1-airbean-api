@@ -1,6 +1,5 @@
 const { signup, getOrderHistory, login } = require('../model/user.model')
 
-
 async function newUser(request, response){
     const {email, password, username} = request.body;
     
@@ -41,7 +40,5 @@ async function getHistoryCtrl(request, response){
         orders: orders
     })
 }
-
-
 
 module.exports = {newUser, getHistoryCtrl, loginCtrl}

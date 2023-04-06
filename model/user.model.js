@@ -29,7 +29,7 @@ async function signup(email, password, username) {
 
 async function login(username, password) {
     const user = await userDb.findOne({ username })
-    const passwordMatch = bcrypt.compare(password, user.password)
+    const passwordMatch = await bcrypt.compare(password, user.password)
 
     if (passwordMatch) {
         return user.userId
@@ -47,6 +47,7 @@ async function getOrderHistory(userId) {
         .map((order) => {
             return {
                 order: order.order,
+                priceTotal: order.order.reduce((acc, current) => acc + current.price, 0),
                 orderedAt: order.orderedAt,
                 delivered: getEta(order.deliveryAt) < 0
             }

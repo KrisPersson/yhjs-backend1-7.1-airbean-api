@@ -10,10 +10,8 @@ const { orderSchema } = require('../schemas/order.schema')
 
 //SE ALLA KAFFESORTER
 router.get('/', getAllBeansCtrl)
-
 //LÄGG BESTÄLLNING
 router.post('/order', validate(orderSchema), verifyProducts, postOrderCtrl)
-
 //SE ORDERSTATUS
 router.get('/order/status/:userId', getOrderStatusCtrl)
 

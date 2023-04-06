@@ -40,7 +40,7 @@ async function getOrderStatus(userId) {
     
     if (currentOrder) {
         return {
-            items: currentOrder?.order,
+            order: currentOrder?.order,
             eta: getEta(currentOrder?.deliveryAt)
         }
     } else {

@@ -27,4 +27,3 @@ async function getOrderStatusCtrl(request, response) {
 }
 
 module.exports = { getAllBeansCtrl, postOrderCtrl, getOrderStatusCtrl }
-
